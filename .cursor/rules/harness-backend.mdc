@@ -1,0 +1,23 @@
+---
+description: Cổng backend của harness. Dùng khi thiết kế hoặc sửa API, use case, phân quyền, job, idempotency, hoặc health check.
+alwaysApply: false
+---
+
+# Backend
+
+Đọc `harness/backend/GATES.md` và áp mọi mục BLOCK. Không giả định framework.
+
+- Validate input ở biên trước use case.
+- Phán quyền và chủ sở hữu trước khi đổi trạng thái.
+- Ghi có thể gửi lại thì có khóa idempotency hoặc unique. Gửi lại không tạo bản thứ hai.
+- Không gọi HTTP trong transaction. Phát sự kiện sau commit hoặc qua outbox.
+- Test ghi rồi đọc lại từ kho. Response HTTP một mình không đủ.
+
+```text
+BAD: catch rỗng, hoặc trả 200 sau khi ghi thất bại.
+GOOD: lỗi có mã ổn định, log có request id, không log token.
+```
+
+Lệnh unit, integration, lint, build ghi vào change brief của project đích.
+
+Nguồn: [developer-backend](https://github.com/romabeckman/harness-kit/blob/main/agents/developer-backend.md), [fullstack-agent-skills](https://github.com/suleyman/fullstack-agent-skills).

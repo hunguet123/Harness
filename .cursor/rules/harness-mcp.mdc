@@ -1,0 +1,16 @@
+---
+description: Cách harness dùng MCP. Dùng khi cần browser, database, hoặc server MCP để lấy bằng chứng cho task phần mềm.
+alwaysApply: false
+---
+
+# MCP
+
+Đọc `harness/mcp/catalog.md` trước khi thêm server.
+
+- `.cursor/mcp.json` để trống cho đến khi task cần một server. Copy đúng một khối từ `harness/mcp/mcp.example.json`.
+- Không dùng server đã archive, gồm `@modelcontextprotocol/server-postgres` và server GitHub cũ.
+- Frontend cần trace mạng hoặc hiệu năng thì bật `chrome-devtools-mcp`. Không trỏ nó vào profile Chrome đang đăng nhập sản phẩm thật.
+- Database chỉ bật profile read-only. Không ghi connection string vào harness.
+- Kết quả tool vào change brief mới là bằng chứng.
+
+Nguồn: [MCP reference servers](https://github.com/modelcontextprotocol/servers), [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp).

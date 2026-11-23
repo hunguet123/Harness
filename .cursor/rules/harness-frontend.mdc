@@ -1,0 +1,22 @@
+---
+description: Cổng frontend của harness. Dùng khi làm màn hình web, form, trạng thái loading/empty/error, accessibility, hoặc hợp đồng UI.
+alwaysApply: false
+---
+
+# Frontend
+
+Đọc `harness/frontend/GATES.md` và áp mọi mục BLOCK. Không giả định framework.
+
+- Mỗi màn hình có loading, có dữ liệu, rỗng, lỗi, và gửi lại.
+- Vùng tương tác có vai trò và tên accessible. Test tìm theo vai trò và tên.
+- Mutation thành công làm tươi đúng bản sao đang hiện. Mutation thất bại hoàn tác cập nhật lạc quan và báo cho người dùng.
+- Không đưa token hay khóa vào bundle.
+
+```text
+BAD: spinner không có lối thoát khi request không trả lời.
+GOOD: quá hạn thì hiện lỗi và nút thử lại, dữ liệu form vẫn còn.
+```
+
+Ảnh một mình không phải bằng chứng. Ghi lệnh test và typecheck của project đích vào brief.
+
+Nguồn: [fullstack-agent-skills](https://github.com/suleyman/fullstack-agent-skills), [chrome-devtools skill](https://github.com/github/awesome-copilot/blob/main/skills/chrome-devtools/SKILL.md).

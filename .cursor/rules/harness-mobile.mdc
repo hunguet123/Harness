@@ -1,0 +1,21 @@
+---
+description: Cổng mobile của harness. Dùng khi làm app iOS, Android, React Native, Flutter, offline, outbox, push, hoặc lưu token trên máy.
+alwaysApply: false
+---
+
+# Mobile
+
+Đọc `harness/mobile/GATES.md` và áp mọi mục BLOCK.
+
+- Khai báo tư thế từng tính năng: online có UX mất mạng, hoặc offline-first.
+- Token nằm trong kho mã hóa của hệ điều hành.
+- Entity ghi khi offline có chiến lược xung đột. Nhiều người sửa thì không dùng last-write-wins im lặng.
+- Offline-first: UI đọc bản cục bộ. Ghi cục bộ và outbox cùng một commit. Mỗi mutation có idempotency key.
+- API có phiên bản. Client cũ bỏ qua được trường mới.
+
+```text
+BAD: render thẳng body HTTP, retry ghi không có key.
+GOOD: máy bay bật, ghi vẫn còn sau khi mở lại app, server chỉ nhận một lần khi có mạng.
+```
+
+Nguồn: [mobile-architecture](https://github.com/amritmalla/claude-full-stack-2.0/blob/HEAD/skills/architecture/mobile-architecture/SKILL.md), [sota-mobile](https://github.com/martinholovsky/sota-skills/blob/main/skills/sota-mobile/rules/03-offline-background-push.md).

@@ -1,0 +1,18 @@
+---
+description: Hợp đồng harness khi làm phần mềm. Dùng khi bắt đầu, triển khai, hoặc kết thúc một thay đổi về mobile, frontend, backend, system design, database, hoặc network.
+alwaysApply: false
+---
+
+# Harness
+
+Khi task đổi hành vi phần mềm:
+
+1. Điền brief từ `harness/templates/change-brief.md`. Ghi stack của project đích trong brief. Thư mục nằm cạnh `harness/` không phải stack mặc định.
+2. Đọc `harness/HARNESS.md`. Chỉ mở `GATES.md` của domain đã đánh dấu.
+3. Đụng API, schema, hợp đồng UI, timeout/retry, hoặc offline thì viết `harness/templates/design-note.md` trước code.
+4. Xong khi G0–G3 có bằng chứng. Lệnh test, lint, build lấy từ project đích.
+5. Lỗi có thể lặp lại thì ghi `harness/templates/failure-memory.md`, kèm kiểm tra sẽ bắt lần sau.
+
+Thiếu bằng chứng thì chưa được đánh dấu xong.
+
+Nguồn vòng làm việc: [harness-engineering](https://github.com/github/awesome-copilot/blob/main/skills/harness-engineering/SKILL.md).

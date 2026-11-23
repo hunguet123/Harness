@@ -1,0 +1,20 @@
+---
+description: Cổng system design của harness. Dùng khi thiết kế hệ thống, ước lượng QPS, hoặc chọn cache, queue, shard, consistency.
+alwaysApply: false
+---
+
+# System design
+
+Đọc `harness/system-design/GATES.md`. Chạy vòng: phạm vi, ước lượng, sơ đồ, đánh đổi, cách hỏng.
+
+- Viết trong phạm vi, ngoài phạm vi, latency, consistency trước khi thêm hộp.
+- QPS, dung lượng, băng thông có đơn vị. "Traffic cao" không phải số.
+- Mỗi lựa chọn có bốn cột: quyết định, giải quyết gì, làm xấu gì, đổi khi nào. Cột cuối là một tín hiệu đo được.
+- Coi thiết kế là giả thuyết. Ràng buộc đổi thì sửa phần giả thuyết đó gãy.
+
+```text
+BAD: "Thêm Redis và Kafka" vì đó là chuẩn.
+GOOD: "Read:write 20:1 → cache TTL 60s. Redis chết thì đọc DB. Bỏ cache khi dữ liệu đổi mỗi request."
+```
+
+Nguồn phương pháp: [system-design skill](https://github.com/proyecto26/system-design-skills/blob/main/skills/system-design/SKILL.md).
