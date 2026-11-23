@@ -87,7 +87,7 @@ trap cleanup EXIT INT TERM
 resolve_source_dir() {
   script_path="${0:-}"
   if [ -n "$script_path" ] && [ -f "$script_path" ]; then
-    script_dir=$(CDPATH= cd -- "$(dirname -- "$script_path")" && pwd)
+    script_dir=$(CDPATH= cd -- "$(dirname -- "$script_path")" && pwd -P)
     if is_source_repo "$script_dir"; then
       printf '%s\n' "$script_dir"
       return 0
@@ -132,8 +132,8 @@ write_exclude_block() {
     return 0
   fi
 
-  git_dir=$(git -C "$target_abs" rev-parse --path-format=absolute --git-dir 2>/dev/null || (cd "$target_abs" && cd "$(git rev-parse --git-dir)" && pwd))
-  top_dir=$(git -C "$target_abs" rev-parse --show-toplevel)
+  git_dir=$(git -C "$target_abs" rev-parse --path-format=absolute --git-dir 2>/dev/null || (cd "$target_abs" && cd "$(git rev-parse --git-dir)" && pwd -P))
+  top_dir=$(cd "$(git -C "$target_abs" rev-parse --show-toplevel)" && pwd -P)
   rel_prefix=""
   if [ "$target_abs" != "$top_dir" ]; then
     rel_prefix="${target_abs#"$top_dir"/}/"
@@ -164,7 +164,7 @@ check_markdown_links() {
   shift
   for md_file in "$@"; do
     [ -f "$md_file" ] || continue
-    md_dir=$(CDPATH= cd -- "$(dirname -- "$md_file")" && pwd)
+    md_dir=$(CDPATH= cd -- "$(dirname -- "$md_file")" && pwd -P)
     targets=$(grep -oE '\[[^]]+\]\([^)]+\)' "$md_file" 2>/dev/null | sed 's/.*]( *//; s/[)# ].*//' || true)
     for t in $targets; do
       case "$t" in
@@ -185,7 +185,7 @@ run_check() {
     echo "Lỗi: không tìm thấy thư mục '$target_dir'." >&2
     exit 1
   fi
-  target_abs=$(CDPATH= cd -- "$target_dir" && pwd)
+  target_abs=$(CDPATH= cd -- "$target_dir" && pwd -P)
 
   if is_source_repo "$target_abs"; then
     docs_root="$target_abs"
@@ -274,7 +274,7 @@ run_uninstall() {
     echo "Lỗi: không tìm thấy thư mục '$target_dir'." >&2
     exit 1
   fi
-  target_abs=$(CDPATH= cd -- "$target_dir" && pwd)
+  target_abs=$(CDPATH= cd -- "$target_dir" && pwd -P)
   if is_source_repo "$target_abs"; then
     echo "Lỗi: '$target_abs' là repo nguồn Harness, không chạy --uninstall tại đây." >&2
     exit 1
@@ -315,7 +315,7 @@ run_uninstall() {
   rmdir "$target_abs/.cursor" 2>/dev/null || true
 
   if git -C "$target_abs" rev-parse --git-dir >/dev/null 2>&1; then
-    git_dir=$(git -C "$target_abs" rev-parse --path-format=absolute --git-dir 2>/dev/null || (cd "$target_abs" && cd "$(git rev-parse --git-dir)" && pwd))
+    git_dir=$(git -C "$target_abs" rev-parse --path-format=absolute --git-dir 2>/dev/null || (cd "$target_abs" && cd "$(git rev-parse --git-dir)" && pwd -P))
     if [ -f "$git_dir/info/exclude" ]; then
       remove_exclude_block "$git_dir/info/exclude"
     fi
@@ -371,7 +371,7 @@ esac
 
 SRC_DIR=$(resolve_source_dir)
 mkdir -p "$TARGET_DIR"
-TARGET_ABS=$(CDPATH= cd -- "$TARGET_DIR" && pwd)
+TARGET_ABS=$(CDPATH= cd -- "$TARGET_DIR" && pwd -P)
 
 if [ "$SRC_DIR" = "$TARGET_ABS" ] || is_source_repo "$TARGET_ABS"; then
   echo "Lỗi: thư mục đích '$TARGET_ABS' chính là repo nguồn Harness." >&2
