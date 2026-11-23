@@ -1,0 +1,15 @@
+---
+description: Hồ sơ ngôn ngữ TypeScript/JavaScript cho Backend (Node/Bun), Frontend Web và React Native.
+globs: "**/*.ts,**/*.tsx,**/*.mts,**/*.cts,**/*.js,**/*.jsx,**/tsconfig*.json,**/package.json"
+alwaysApply: false
+---
+
+# TypeScript / JavaScript
+
+Đọc `languages/typescript.md` trong gốc bộ harness.
+
+- `tsconfig` bật `strict: true`. Không dùng `any` hoặc ép `as` bừa trên dữ liệu từ mạng/DB/queue; bắt buộc validate runtime ở biên (`zod`, `valibot`, `typebox`, hoặc DTO validator có `whitelist`).
+- Khóa chiều phụ thuộc module: Backend (`transport` → `application` → `domain`), Frontend/RN (`app` → `features/*` → `data-access` → `shared`, cấm hai `features/*` import chéo).
+- Bật kiểm Promise trôi (`no-floating-promises`), truyền `AbortSignal` cho request có thể hết hạn hoặc rời màn, không chạy hàm `*Sync`/CPU nặng nghẽn event loop.
+- Không đưa secret vào biến môi trường public (`NEXT_PUBLIC_`, `VITE_`, `EXPO_PUBLIC_`).
+- G2 ghi lệnh `tsc --noEmit`, linter, test và build thật của repo.

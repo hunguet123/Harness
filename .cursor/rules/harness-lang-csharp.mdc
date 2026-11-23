@@ -1,0 +1,14 @@
+---
+description: Hồ sơ ngôn ngữ C# và .NET cho ASP.NET Core Backend, Worker và MAUI.
+globs: "**/*.cs,**/*.csproj,**/*.sln,**/Directory.Build.props"
+alwaysApply: false
+---
+
+# C# / .NET
+
+Đọc `languages/csharp.md` trong gốc bộ harness.
+
+- Tách project `Domain` → `Application` → `Infrastructure` / `Api`; bật `<Nullable>enable</Nullable>`.
+- Truyền `CancellationToken` xuyên suốt từ endpoint/worker xuống `HttpClient` và EF Core/Dapper; cấm `.Result` / `.Wait()` và cấm `async void` ngoài event UI có bắt lỗi.
+- Khởi tạo `HttpClient` qua `IHttpClientFactory` kèm timeout, không `new HttpClient()` theo request; không tiêm dịch vụ `Scoped` (`DbContext`) vào `Singleton`; dùng `.AsNoTracking()` cho truy vấn chỉ đọc.
+- G2 chạy `dotnet build -warnaserror`, `dotnet format --verify-no-changes` và `dotnet test`.

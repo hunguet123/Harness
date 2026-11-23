@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": ".cursor/hooks/harness-guard.sh",
+        "matcher": "Write|StrReplace",
+        "timeout": 5
+      }
+    ],
+    "beforeShellExecution": [
+      {
+        "command": ".cursor/hooks/harness-guard.sh",
+        "matcher": "git.*\\scommit(?:\\s|$)",
+        "timeout": 5
+      }
+    ]
+  }
+}

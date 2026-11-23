@@ -1,0 +1,15 @@
+---
+description: Hồ sơ ngôn ngữ Go cho Backend, Network, Worker và CLI.
+globs: "**/*.go,**/go.mod,**/go.sum"
+alwaysApply: false
+---
+
+# Go
+
+Đọc `languages/go.md` trong gốc bộ harness.
+
+- `cmd/<service>/main.go` chỉ làm bootstrap; logic đặt trong `internal/` (`domain` không import HTTP/SQL/SDK ngoài; `app` định nghĩa interface nhỏ tại nơi gọi; các adapter hiện thực hóa I/O).
+- Mọi hàm I/O nhận `ctx context.Context` đầu tiên; không gọi `context.Background()` làm đứt deadline của request đang chạy; không dùng `http.DefaultClient` không timeout.
+- Mọi goroutine phải có đường dừng rõ ràng và giới hạn đồng thời khi fan-out (`errgroup.SetLimit`).
+- Bọc lỗi với `%w`, kiểm bằng `errors.Is`/`errors.As`, đóng `rows`/`resp.Body` và kiểm `rows.Err()`/`tx.Commit()`.
+- G2 chạy `go vet ./...`, `golangci-lint run` (nếu có) và `go test -race ./...`.

@@ -1,0 +1,14 @@
+---
+description: Hồ sơ ngôn ngữ Swift (iOS) và Dart (Flutter) cho ứng dụng Mobile.
+globs: "**/*.swift,**/*.dart,**/Package.swift,**/pubspec.yaml"
+alwaysApply: false
+---
+
+# Swift (iOS) & Dart (Flutter)
+
+Đọc `languages/mobile-swift-dart.md` và `mobile/GATES.md` trong gốc bộ harness.
+
+- Tách rõ module `app` → `features/*` (không import chéo) → `sync-outbox` / `local-store` / `remote-client` / `device-security` → `core-domain`.
+- Swift: cập nhật UI trên `@MainActor`, hủy `Task` khi rời màn và kiểm `Task.checkCancellation()`, dùng `[weak self]` tránh retain cycle, lưu token trong Keychain.
+- Dart/Flutter: bật strict analysis, kiểm `context.mounted` sau mọi `await`, đẩy xử lý nặng sang `Isolate.run`, lưu token qua `flutter_secure_storage`, gắn `Semantics` cho control tùy biến.
+- G2 chạy `swift test`/`xcodebuild test` hoặc `dart analyze --fatal-infos` + `flutter test`.

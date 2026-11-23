@@ -7,9 +7,9 @@ alwaysApply: false
 
 Khi task đổi hành vi phần mềm (đường dẫn tính từ gốc bộ harness; thêm tiền tố `harness/` nếu bộ này đặt làm thư mục con):
 
-1. Copy `templates/change-brief.md` sang bản ghi của task ở project đích rồi điền (không sửa trực tiếp file trong `templates/`). Ghi stack của project đích trong brief; thư mục nằm cạnh `harness/` không phải stack mặc định.
-2. Đọc `HARNESS.md`. Chỉ mở `GATES.md` của domain đã đánh dấu.
-3. Đụng API, schema, hợp đồng UI, timeout/retry, hoặc offline thì copy `templates/design-note.md` sang cạnh brief và viết trước code.
+1. Đọc `PROJECT.md` trong gốc bộ harness để lấy lệnh chạy thật, ánh xạ module và bẫy lịch sử của dự án (nếu chưa điền thì chạy skill `onboard-project`). Copy `templates/change-brief.md` sang bản ghi của task ở project đích rồi điền (không sửa trực tiếp file trong `templates/`; xem mẫu tại `examples/order-create/`).
+2. Đọc `HARNESS.md`. Mở đúng `GATES.md` của domain và file `languages/*.md` khớp ngôn ngữ dự án. Giữ đúng chiều phụ thuộc một chiều giữa các module.
+3. Đụng API, schema, hợp đồng UI, timeout/retry, offline, hoặc thêm cạnh phụ thuộc module mới thì copy `templates/design-note.md` sang cạnh brief và viết trước code.
 4. Xong khi G0–G3 có bằng chứng. Lệnh test, lint, build lấy từ project đích (hoặc ghi `K/A` kèm lý do nếu phạm vi chỉ dừng ở thiết kế).
 5. Lỗi có thể lặp lại thì copy `templates/failure-memory.md` sang nơi lưu lỗi của project đích, kèm kiểm tra sẽ bắt lần sau.
 

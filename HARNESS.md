@@ -6,22 +6,22 @@ Một thay đổi chỉ xong khi bốn cổng dưới đây có bằng chứng. 
 
 | Thành phần | Trong bộ này | Việc của nó |
 | --- | --- | --- |
-| Instructions | `HARNESS.md`, `.cursor/skills/` | Quy trình G0–G3 và lúc nào mở domain nào |
-| Constraints | `*/GATES.md`, `.cursor/rules/` | Cổng đầy đủ và bản ngắn agent mang theo |
-| Feedback | Lệnh của project đích, `EXPLAIN`, MCP khi catalog cho phép | Cho kết quả chạy được |
-| Memory | `templates/failure-memory.md` | Biến lỗi đã gặp thành kiểm tra lần sau |
-| Evaluation | Cột bằng chứng trong brief | Chấm xong hay chưa bằng chứng, không bằng cảm giác |
-| Governance | Cổng G0–G3 | Ai được đánh dấu xong, và khi nào phải dừng |
+| Instructions | `HARNESS.md`, `AGENTS.md`, `.cursor/skills/` | Quy trình G0–G3, khảo sát dự án (`onboard-project`) và định tuyến domain |
+| Constraints | `*/GATES.md`, `languages/*.md`, `.cursor/rules/`, `.cursor/hooks/` | Cổng hành vi, bản đồ module, hồ sơ ngôn ngữ và hook chặn cơ học |
+| Feedback | Lệnh của project đích trong `PROJECT.md`, `EXPLAIN`, MCP khi catalog cho phép | Cho kết quả chạy được |
+| Memory | `PROJECT.md`, `templates/failure-memory.md` | Nhớ cấu trúc/lệnh của repo đích và biến lỗi đã gặp thành kiểm tra lần sau |
+| Evaluation | Cột bằng chứng trong brief, ví dụ chuẩn `examples/order-create/` | Chấm xong hay chưa bằng chứng, không bằng cảm giác |
+| Governance | Cổng G0–G3 và ranh giới Escalation | Ai được đánh dấu xong, và khi nào phải dừng hỏi |
 
 ## Bốn cổng
 
 ### G0 — Phạm vi
 
-Copy [templates/change-brief.md](templates/change-brief.md) sang bản ghi của task ở project đích (ví dụ `docs/changes/<ten-task>/change-brief.md`), rồi điền. Không ghi đè các file mẫu trong `templates/`.
+Đọc `PROJECT.md` của dự án đích (nếu mới gắn Harness lần đầu thì chạy skill `onboard-project` để điền `PROJECT.md` từ [templates/project-profile.md](templates/project-profile.md)). Copy [templates/change-brief.md](templates/change-brief.md) sang bản ghi của task ở project đích (ví dụ `docs/changes/<ten-task>/change-brief.md`, xem mẫu đã điền tại [examples/order-create/change-brief.md](examples/order-create/change-brief.md)), rồi điền. Không ghi đè các file mẫu trong `templates/`.
 
 - Hành vi người dùng hoặc hệ thống thấy được, viết một câu.
 - Trong phạm vi và ngoài phạm vi.
-- Domain bị đụng: đánh dấu đúng file `GATES.md` sẽ mở.
+- Domain, module bị đụng, và hồ sơ ngôn ngữ: đánh dấu đúng file `GATES.md` và `languages/*.md` sẽ mở (xem [languages/README.md](languages/README.md)).
 - Tiêu chí chấp nhận: quan sát được, kiểm được.
 
 Thiếu G0 thì chưa viết code sản phẩm. Sửa typo, đổi tên nội bộ, hoặc format thì ghi một dòng "ngoài cổng domain" và chạy lint/test của project.
@@ -35,6 +35,7 @@ Bắt buộc khi thay đổi đụng một trong các ranh giới:
 - Hợp đồng UI (vai trò, tên accessible, trạng thái màn hình)
 - Giao thức mạng: timeout, retry, idempotency
 - Tư thế offline của mobile
+- Cạnh phụ thuộc module mới hoặc đổi chiều phụ thuộc hiện có
 
 Copy [templates/design-note.md](templates/design-note.md) sang cạnh change brief trước khi viết code. Ghi quyết định (tín hiệu, chọn, đánh đổi & cách hỏng, đổi khi nào) và hợp đồng biên. Cổng domain tương ứng là danh sách câu hỏi của G1.
 
@@ -51,7 +52,7 @@ Copy [templates/design-note.md](templates/design-note.md) sang cạnh change bri
 Lượt hai:
 
 - Chạy lại lệnh đã khai trong brief. Dán pass/fail.
-- Đối chiếu diff với cổng domain. Mục bỏ qua có lý do.
+- Đối chiếu diff với cổng domain. Ghi kết quả từng mục BLOCK/DECIDE áp dụng vào bảng **Đối chiếu cổng áp dụng** của brief; có thể gộp các mục không áp dụng cùng section khi dùng chung một lý do. `GATES.md` là tài liệu chuẩn chỉ đọc, không phải nơi tick cho task.
 - Lỗi review hoặc lỗi chạy có thể tái diễn: copy [templates/failure-memory.md](templates/failure-memory.md) sang nơi lưu lỗi của project đích, gồm mục **Phát hiện** (test, lint, hoặc bước review sẽ bắt lần sau).
 
 ## Mức chặn
@@ -81,7 +82,7 @@ Một trong các dạng sau, gắn với đúng mục cổng:
 ## Định nghĩa xong
 
 - G0 có brief (bản riêng của task, không sửa file trong `templates/`).
-- Mỗi domain bị đụng đã tick BLOCK, hoặc ghi "không áp dụng" kèm lý do.
+- Mỗi mục BLOCK/DECIDE áp dụng của domain bị đụng đã có dòng PASS/N/A và bằng chứng hoặc lý do trong brief.
 - G2 có lệnh đã chạy, hoặc ghi `K/A` kèm lý do khi phạm vi chỉ là thiết kế.
 - G3 đã đối chiếu diff (hoặc design note nếu chưa có code).
 - Failure memory được viết khi có lỗi đáng lặp, hoặc brief ghi "không có lỗi đáng ghi".

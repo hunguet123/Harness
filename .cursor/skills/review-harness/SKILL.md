@@ -12,8 +12,8 @@ Nguồn: mục Review của [harness-engineering](https://github.com/github/awes
 
 ## Việc phải làm
 
-1. Đọc change brief và design note của task. Thay đổi hành vi mà thiếu change brief là BLOCK ở G0; đụng ranh giới G1 (API, schema, hợp đồng UI, timeout/retry, offline) mà thiếu design note là BLOCK ở G1.
-2. Đọc diff (hoặc design note nếu phạm vi chỉ là thiết kế). Đối chiếu từng domain đã đánh dấu với `GATES.md`.
+1. Đọc `PROJECT.md` (nếu có), change brief và design note của task. Thay đổi hành vi mà thiếu change brief là BLOCK ở G0; đụng ranh giới G1 (API, schema, hợp đồng UI, timeout/retry, offline) mà thiếu design note là BLOCK ở G1.
+2. Đọc diff (hoặc design note nếu phạm vi chỉ là thiết kế). Đối chiếu từng domain đã đánh dấu với `GATES.md` (gồm cả chiều phụ thuộc giữa các module) và hồ sơ ngôn ngữ `languages/*.md` tương ứng.
 3. Chạy lại lệnh trong brief (trừ các mục ghi `K/A` có lý do hợp lệ). Ghi pass hoặc fail.
 4. Báo phát hiện theo mức: BLOCK còn thiếu bằng chứng, DECIDE còn bỏ trống, rồi ghi chú.
 

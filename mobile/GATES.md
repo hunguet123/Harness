@@ -4,6 +4,23 @@ Mở khi làm app iOS, Android, React Native, Flutter, hoặc Kotlin Multiplatfo
 
 Nguồn tinh chỉnh: lớp local-truth / outbox / BFF từ [awesome-architecture mobile-app](https://github.com/study8677/awesome-architecture/blob/main/en/templates/mobile-app/README.md), luật offline từ [sota-mobile](https://github.com/martinholovsky/sota-skills/blob/main/skills/sota-mobile/rules/03-offline-background-push.md), checklist lưu trữ và trạng thái từ [oh-my-agent](https://github.com/first-fluke/oh-my-agent/blob/main/skills/oma-mobile/resources/checklist.md).
 
+## Bản đồ module trên thiết bị và ngôn ngữ
+
+Chiều phụ thuộc một chiều cho ứng dụng di động (tách thành local packages / Gradle modules / thư mục khóa import):
+
+```text
+app-shell ──► features-ui ──► core-domain ◄── sync-outbox / local-store / remote-client / device-platform
+```
+
+- `app-shell`: khởi động app, bảng điều hướng & deep link, theo dõi vòng đời nền/tiền cảnh, cấu hình DI.
+- `features-ui` (`presentation`): màn hình, ViewModel / Bloc / Store của từng tính năng (cấm hai `features/*` import chéo), hiển thị đủ trạng thái `loading`, `content`, `empty`, `error`, `offline`/`pending`. Khi offline-first, UI chỉ đọc luồng dữ liệu từ `local-store`.
+- `core-domain`: mô hình nghiệp vụ, quy tắc kiểm tra và hợp đồng cổng lưu trữ/đồng bộ độc lập giao diện.
+- `local-store`: cơ sở dữ liệu trên thiết bị (SQLite / Room / SwiftData / CoreData / Drift), kịch bản nâng cấp schema trên máy người dùng, và hàm xóa sạch dữ liệu tài khoản khi đăng xuất.
+- `sync-outbox`: ghi thay đổi cục bộ kèm hàng `outbox` trong cùng một transaction cục bộ, cấp `idempotency_key`, đồng bộ theo thứ tự aggregate khi có mạng, và xử lý xung đột (`409` / merge).
+- `remote-client` & `device-platform`: client HTTP/gRPC có timeout và làm mới phiên tối đa 1 lần khi `401`, luồng tải ảnh/video riêng theo tham chiếu, kho khóa mã hóa (Keychain / Keystore), xử lý push và tác vụ nền của hệ điều hành.
+
+**Hồ sơ ngôn ngữ Mobile (mở kèm nền tảng của dự án):** [Swift (iOS) & Dart (Flutter)](../languages/mobile-swift-dart.md) · [Kotlin (Android & KMP)](../languages/jvm.md) · [TypeScript (React Native & Expo)](../languages/typescript.md) · [SQLite & IDL](../languages/sql-idl.md).
+
 ## G1 — Tư thế mạng
 
 DECIDE trước khi viết màn hình. Một app có thể chọn khác nhau theo từng tính năng.

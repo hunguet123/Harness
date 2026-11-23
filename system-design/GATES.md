@@ -4,6 +4,19 @@ Mở file này trước các domain khác khi thêm dịch vụ, đổi luồng 
 
 Nguồn tinh chỉnh: checklist phạm vi, ước lượng, và tín hiệu chọn thành phần từ [systems-design.skill](https://github.com/ryanthedev/systems-design.skill/blob/main/skills/distributed-systems-design/references/checklists.md), bản đồ ngữ cảnh từ [backend-things](https://github.com/rendyspratama/backend-things).
 
+## Bản đồ khối kiến trúc và ngôn ngữ
+
+Khi thiết kế dự án mới hoặc vẽ lại ranh giới dự án đã có, đặt từng thành phần vào đúng 6 khối sau (khối nào chưa có tín hiệu thì để trống, không dựng sẵn vỏ rỗng):
+
+- `edge-ingress`: DNS, CDN, WAF, Load Balancer / API Gateway (TLS, định tuyến, giới hạn tải biên).
+- `compute-services`: các khối xử lý nghiệp vụ stateless. **Mặc định bắt đầu bằng Modular Monolith** có ranh giới module khóa chặt; chỉ tách thành service rời khi lệch hẳn đặc tính tải, chu kỳ phát hành/đội ngũ độc lập, hoặc cần cô lập lỗi/dữ liệu riêng.
+- `data-primary`: kho giao dịch nguồn sự thật (SQL / NewSQL), bản sao đọc (`read replica`), chiến lược phân mảnh (`shard`), và kho đối tượng (`object storage`) tách riêng cho ảnh/video/file.
+- `cache-search`: bộ nhớ đệm đọc nóng (Redis/Memcached) và chỉ mục tìm kiếm/phân tích tách khỏi đường ghi OLTP.
+- `async-messaging`: hàng đợi việc nền (`work queue` + `DLQ`), luồng sự kiện (`event stream`), trình lập lịch và cặp `outbox`/`inbox`.
+- `platform-observability`: quản lý bí mật/IAM, thu thập `metrics`/`logs`/`traces`, cảnh báo SLO và phương án chịu lỗi mất nút/vùng.
+
+**Chọn ngôn ngữ cho từng khối:** đối chiếu ma trận tại [languages/README.md](../languages/README.md) (Go, Rust, TypeScript, Java/Kotlin, C#, Python cho `compute`/`async`; TypeScript cho Web; Swift/Kotlin/Dart/TS cho Mobile; SQL/IDL tại [languages/sql-idl.md](../languages/sql-idl.md)).
+
 ## G1 — Phạm vi và số
 
 BLOCK

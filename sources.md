@@ -47,12 +47,14 @@ Khảo sát trên GitHub, tháng 11/2026. Bộ này là bản viết lại độ
 | [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) | Khối `mcp.json` cho log mạng và trace frontend | Tự bật server lúc mở harness |
 | [microsoft/postgres-mcp](https://github.com/microsoft/postgres-mcp) | Lệnh `run` không nhúng mật khẩu. Profile read-only | DSN trong file |
 | [Cursor rules](https://github.com/slava-kudzinau/cursor-guide/blob/main/docs/01-fundamentals-core-concepts/02-environment-project-setup.md) | `.mdc` với `description` và `alwaysApply: false` để agent tự chọn | Rule luôn bật cho mọi file |
-| [cc-agent-harness](https://github.com/KwokJay/cc-agent-harness) | Rule ngắn, skill ở đường Cursor nạp, MCP merge từng server | CLI sinh rule theo ngôn ngữ repo |
+| [cc-agent-harness](https://github.com/KwokJay/cc-agent-harness) | Rule ngắn, skill ở đường Cursor nạp, MCP merge từng server | Đóng gói CLI nặng phụ thuộc runtime |
+| [adobe/ai-repo-harness-guide](https://github.com/adobe/ai-repo-harness-guide), [pt9912/a-check](https://github.com/pt9912/a-check), [anma-labs/anma](https://github.com/anma-labs/anma) | Kiến trúc là đồ thị phụ thuộc một chiều giữa các module; cưỡng bức bằng linter/compiler thay vì nhắc miệng | Khóa cứng một công cụ quét duy nhất |
+| [softspark/ai-toolkit](https://github.com/softspark/ai-toolkit), [DongkuKim/dk-harness](https://github.com/DongkuKim/dk-harness), [Ecro/harness-maker](https://github.com/Ecro/harness-maker) | Tách cổng chung khỏi hồ sơ ngôn ngữ (`languages/*.md`), tự dò manifest repo đã có và nạp rule theo `globs` đuôi file | Sinh hàng chục agent persona trùng lặp |
 
 ## Cách tinh chỉnh
 
-- Một bộ, sáu domain, bốn cổng chung. Rule và skill nằm trong harness, không gắn stack của thư mục khác.
-- Không gắn ngôn ngữ, framework, ORM, package manager, hay lệnh test. Project đích ghi stack và lệnh vào change brief.
-- Validation ở biên và đọc-lại-sau-ghi là luật. Thư viện làm việc đó do project chọn.
+- Ba tầng tách bạch: **Cổng hành vi (`GATES.md`)** + **Bản đồ module một chiều trong từng domain** + **Hồ sơ ngôn ngữ nạp theo manifest/đuôi file (`languages/*.md` & `harness-lang-*.mdc`)**.
+- Không ép dự án mới hay cũ vào một ngôn ngữ duy nhất; nhưng khi dự án đã dùng ngôn ngữ nào thì khóa đúng trình kiểm kiểu, linter ranh giới module, test runner và cờ đỏ của ngôn ngữ đó.
+- Validation ở biên và đọc-lại-sau-ghi là luật. Thư viện cụ thể do project đích chọn và ghi lệnh thật vào change brief.
 - System design là cổng quyết định, chạy trước khi mở backend, database, và network.
 - Mọi mục BLOCK đòi bằng chứng. Mục chỉ là lời khuyên chung ("code sạch", "SOLID") không đưa vào cổng.

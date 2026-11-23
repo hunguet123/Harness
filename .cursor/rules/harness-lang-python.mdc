@@ -1,0 +1,15 @@
+---
+description: Hồ sơ ngôn ngữ Python cho Backend (FastAPI, Django), Worker và Data/AI services.
+globs: "**/*.py,**/pyproject.toml,**/requirements*.txt,**/Pipfile"
+alwaysApply: false
+---
+
+# Python
+
+Đọc `languages/python.md` trong gốc bộ harness.
+
+- Tách rõ `domain` (thuần Python), `application` (use case + unit-of-work), `entrypoints` (API/worker), `adapters` (ORM/HTTP client); khóa import bằng `import-linter` hoặc `tach` khi có.
+- Ghi đầy đủ type hints ở biên module/use case, validate biên bằng Pydantic/serializer chặt (không truyền `dict[str, Any]` thô vào `domain`).
+- Trong `async def`, tuyệt đối không gọi I/O chặn luồng (`requests`, `time.sleep`, driver DB đồng bộ). Mỗi request/job dùng riêng một DB `Session`/`AsyncSession`.
+- Tránh giá trị mặc định khả biến (`=[]`, `={}`) và không nuốt `asyncio.CancelledError`.
+- G2 chạy `ruff check`, kiểm kiểu (`pyright`/`mypy`) và `pytest`.

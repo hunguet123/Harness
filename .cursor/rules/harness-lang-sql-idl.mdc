@@ -1,0 +1,15 @@
+---
+description: Hồ sơ SQL Engines (PostgreSQL, MySQL, SQLite, Redis) và IDL biên (OpenAPI, Protobuf/gRPC, GraphQL).
+globs: "**/*.sql,**/*.proto,**/*.graphql,**/*.gql,**/openapi*.yaml,**/openapi*.yml,**/openapi*.json,**/schema.prisma"
+alwaysApply: false
+---
+
+# SQL Engines & API IDL
+
+Đọc `languages/sql-idl.md` và `database/GATES.md` trong gốc bộ harness.
+
+- PostgreSQL: `CREATE INDEX CONCURRENTLY` chạy ngoài transaction block; đặt `lock_timeout`; dùng `CHECK (...) NOT VALID` rồi `VALIDATE CONSTRAINT` trên bảng lớn; dùng `timestamptz` và `numeric`/`bigint` cho tiền.
+- MySQL: nhớ mọi lệnh DDL tự ngầm `COMMIT` và không rollback được; dùng `ALGORITHM=INPLACE, LOCK=NONE` hoặc công cụ online schema change cho bảng lớn; chuẩn `utf8mb4`.
+- SQLite: bật `PRAGMA foreign_keys = ON;` và `journal_mode = WAL;`; giữ transaction ghi thật ngắn.
+- Redis: luôn đặt `TTL` cho cache, cấm `KEYS *` trên production, không coi mặc định là kho bền duy nhất.
+- OpenAPI / Protobuf / GraphQL: giữ tương thích ngược cho client cũ; trong Protobuf cấm đổi số tag và phải `reserved` tag/tên trường đã xóa.

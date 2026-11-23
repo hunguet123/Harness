@@ -3,6 +3,8 @@
 - Ngày:
 - Project:
 - Stack (ngôn ngữ, framework, database):
+- Hồ sơ ngôn ngữ mở (`languages/*.md`):
+- Module bị đụng (theo bản đồ trong `GATES.md`):
 - Một câu hành vi:
 
 ## Phạm vi
@@ -33,10 +35,18 @@ Mục không áp dụng (một dòng lý do mỗi mục):
 
 ## Ranh giới
 
-Có đụng API, schema, hợp đồng UI, timeout/retry, hoặc offline không?
+Có đụng API, schema, hợp đồng UI, timeout/retry, offline, hoặc thêm cạnh phụ thuộc module mới không?
 
 - [ ] Có — link design note:
 - [ ] Không
+
+## Đối chiếu cổng áp dụng
+
+Không sửa `GATES.md`. Ghi một dòng cho mỗi mục BLOCK/DECIDE áp dụng; các mục không áp dụng trong cùng một section có thể gộp một dòng nếu cùng lý do.
+
+| File / section | Mục BLOCK hoặc DECIDE | Kết quả | Bằng chứng hoặc lý do không áp dụng |
+| --- | --- | --- | --- |
+| | | PASS / N/A | |
 
 ## Bằng chứng G2
 
@@ -54,6 +64,6 @@ Lệnh khác (EXPLAIN, kiểm tra tay):
 ## G3
 
 - [ ] Đã chạy lại lệnh ở lượt hai
-- [ ] Diff khớp phạm vi
-- [ ] Cổng domain đã tick hoặc có lý do bỏ qua
+- [ ] Diff khớp phạm vi và không vi phạm chiều phụ thuộc module
+- [ ] Mỗi mục BLOCK/DECIDE áp dụng đã có dòng PASS/N/A và bằng chứng/lý do trong brief
 - [ ] Failure memory: link, hoặc "không có lỗi đáng ghi"

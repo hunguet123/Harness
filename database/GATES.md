@@ -4,6 +4,18 @@ Mở khi thêm hoặc đổi bảng, cột, khóa, index, transaction, hoặc tr
 
 Nguồn tinh chỉnh: [sota-databases](https://github.com/martinholovsky/sota-skills/blob/main/skills/sota-databases/SKILL.md), [engineering-playbook database-review](https://github.com/sigmadigitalza/engineering-playbook/blob/main/docs/playbooks/database-review.md), [DATABASE_CHECKLIST](https://github.com/baelfyre/orchestra/blob/main/skills/chronicler/DATABASE_CHECKLIST.md).
 
+## Bản đồ module dữ liệu và ngôn ngữ
+
+Tầng dữ liệu được quản lý tách bạch qua 5 module:
+
+- `schema-constraints`: định nghĩa bảng, kiểu dữ liệu chính xác (`timestamptz`, `numeric`/số nguyên đơn vị nhỏ nhất cho tiền), khóa chính/ngoại, `UNIQUE`, `CHECK`, `NOT NULL`, và cột/chính sách cô lập `tenant`.
+- `migrations`: chuỗi phiên bản DDL một chiều, tách riêng pha mở rộng (`expand`), lấp dữ liệu nền theo lô (`backfill`), và thu hẹp/siết ràng buộc (`contract`).
+- `queries-indexes`: tập câu đọc/ghi đã đặt tên (`sqlc`, query builder hoặc repository), index ghép/từng phần gắn với truy vấn thật, phân trang keyset và bằng chứng `EXPLAIN`.
+- `tx-concurrency`: quản lý phiên/unit-of-work gắn với use case, khóa lạc quan (`version`) hoặc khóa bi quan (`FOR UPDATE`), chính sách thử lại có trần khi deadlock/serialization.
+- `outbox-lifecycle`: bảng `outbox` (phát sự kiện sau commit), `inbox` (chống xử lý trùng), bảng lưu vết (`audit`), phân vùng (`partition`) và dọn dữ liệu hết hạn (`retention`).
+
+**Hồ sơ engine & ngôn ngữ truy vấn:** bắt buộc đọc thêm [SQL Engines & IDL](../languages/sql-idl.md) để áp đúng luật riêng của **PostgreSQL**, **MySQL/InnoDB**, **SQLite**, **Redis**, kèm hồ sơ ngôn ngữ Backend đang giữ ORM/driver ([Go](../languages/go.md), [TypeScript](../languages/typescript.md), [Python](../languages/python.md), [Java/Kotlin](../languages/jvm.md), [Rust](../languages/rust.md), [C#](../languages/csharp.md)).
+
 ## G1 — Invariant nằm trong schema
 
 BLOCK

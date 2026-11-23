@@ -1,0 +1,15 @@
+---
+description: Hồ sơ ngôn ngữ Java và Kotlin cho Backend JVM (Spring, Ktor) và Android / KMP.
+globs: "**/*.java,**/*.kt,**/*.kts,**/pom.xml,**/build.gradle*"
+alwaysApply: false
+---
+
+# Java & Kotlin
+
+Đọc `languages/jvm.md` trong gốc bộ harness.
+
+- Khóa chiều phụ thuộc module (`domain` không import Spring/JPA/Android SDK; các `:feature:*` không phụ thuộc chéo), ưu tiên kiểm tự động bằng ArchUnit hoặc Konsist.
+- Với Spring/JPA: không tự gọi `@Transactional` trong cùng class (`this.method()`), khai rõ `rollbackFor` nếu có checked exception, tắt `open-in-view`, không trả thẳng `@Entity` ra biên HTTP.
+- Với Kotlin Coroutines: dùng `Structured Concurrency`, cấm `GlobalScope`, luôn ném lại `CancellationException` khi bắt `Exception`.
+- Dùng `BigDecimal` hoặc `Long` đơn vị nhỏ nhất cho tiền tệ; chia sẻ HTTP client/pool có timeout; trên Android cất token qua Keystore.
+- G2 chạy `./gradlew check` hoặc `./mvnw verify`.

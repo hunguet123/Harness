@@ -4,6 +4,22 @@ Mở khi thêm hoặc đổi màn hình web, form, trạng thái máy chủ, ho�
 
 Nguồn tinh chỉnh: pattern frontend của [harness-claude-code](https://github.com/MartinKChen/harness-claude-code) (trạng thái, vùng accessible, invalidate sau mutation) và câu hỏi nền tảng của [frontend-system-design](https://github.com/devkodeio/frontend-system-design).
 
+## Bản đồ module và ngôn ngữ
+
+Chiều phụ thuộc một chiều cho ứng dụng Web (khóa bằng linter ranh giới module khi repo hỗ trợ):
+
+```text
+app-shell ──► features/<ten-mien> ──► data-access ──► shared (ui, lib, config)
+```
+
+- `app-shell`: khởi tạo ứng dụng, bảng định tuyến (`router`), khung bố cục chung, cổng kiểm phiên/quyền, `ErrorBoundary` toàn cục và các provider nền.
+- `features/<ten-mien>`: màn hình, luồng biểu mẫu, kiểm tra input biên phía client, và state giao diện cục bộ của miền nghiệp vụ đó. **Cấm hai `features/*` import thẳng ruột nội bộ của nhau** (giao tiếp qua điều hướng URL, callback ở `app-shell`, hoặc hạ phần dùng chung xuống `data-access`/`shared`).
+- `data-access` (`entities` / `api`): HTTP client tập trung, định nghĩa khóa cache/invalidation cho dữ liệu máy chủ, ánh xạ DTO API sang mô hình hiển thị, truyền `AbortSignal` hủy request cũ.
+- `shared/ui`: các thành phần giao diện gốc (nút, ô nhập, hộp thoại, bảng, thông báo) đã gắn chuẩn vai trò ngữ nghĩa (`role`), nhãn accessible và điều hướng bàn phím; không chứa logic gọi mạng hay nghiệp vụ.
+- `shared/lib` & `config`: tiện ích thuần (định dạng ngày/tiền/chuỗi) và bộ đọc biến môi trường public đã kiểm kiểu.
+
+**Hồ sơ ngôn ngữ Frontend:** chuẩn mặc định là **TypeScript** (cùng HTML ngữ nghĩa & CSS) — đọc kèm [languages/typescript.md](../languages/typescript.md) và hợp đồng API tại [languages/sql-idl.md](../languages/sql-idl.md).
+
 ## G1 — Bề mặt
 
 DECIDE, ghi trong design note hoặc brief:

@@ -4,6 +4,27 @@ Mở khi đổi API, use case, phân quyền, job, hoặc tích hợp. Cổng n�
 
 Nguồn tinh chỉnh: cổng xong của [harness-kit](https://github.com/romabeckman/harness-kit/blob/main/agents/developer-backend.md), bản đồ [backend-things](https://github.com/rendyspratama/backend-things), cặp engineer/reviewer của [harness-claude-code](https://github.com/MartinKChen/harness-claude-code).
 
+## Bản đồ module và ngôn ngữ
+
+Chiều phụ thuộc một chiều bắt buộc (cấm import ngược mũi tên):
+
+```text
+bootstrap ──► transport / jobs-outbox ──► application ──► domain
+bootstrap ──► persistence / integrations ──────┘ (hiện thực hóa port của application/domain)
+```
+
+- `domain`: entity, aggregate, value object, bất biến nghiệp vụ và lỗi miền thuần túy. **Cấm import** framework HTTP/RPC, ORM/SQL driver, SDK hãng ngoài hay biến môi trường.
+- `application` (`use-cases`): điều phối luồng nghiệp vụ, kiểm tra phân quyền trên tài nguyên, làm chủ ranh giới transaction, khai báo `port` (interface kho lưu trữ / cổng ngoài).
+- `transport` (`http`, `grpc`, `graphql`, `webhook`): xác thực chữ ký/phiên, validate DTO biên, gọi `application`, ánh xạ lỗi miền ra mã trả về ổn định. Không đặt luật nghiệp vụ hay câu SQL tại đây.
+- `persistence`: hiện thực hóa repository, truy vấn dữ liệu, mapper giữa bảng kho lưu trữ và `domain`.
+- `jobs-outbox`: worker hàng đợi, cron/scheduler, tiến trình đọc `outbox` phát sự kiện và `inbox` dedupe — gọi chung vào `application`, không nhân bản luật nghiệp vụ.
+- `integrations`: adapter bọc dịch vụ bên thứ ba (thanh toán, thông báo, lưu trữ), dịch DTO ngoài về kiểu nội bộ (anti-corruption layer).
+- `bootstrap` (`cmd` / `main` / `config`): đọc cấu hình môi trường fail-fast, nối DI, khởi tạo pool, health `live`/`ready`, telemetry và đường tắt nhẹ nhàng.
+
+*Dự án mới:* tạo đúng các module có dùng theo sơ đồ trên. *Dự án đã có:* ánh xạ thư mục hiện tại vào các vai trò này trong brief/note và cấm tạo thêm cạnh phụ thuộc ngược chiều.
+
+**Hồ sơ ngôn ngữ Backend (mở kèm file khớp repo):** [TypeScript](../languages/typescript.md) · [Go](../languages/go.md) · [Python](../languages/python.md) · [Java/Kotlin](../languages/jvm.md) · [Rust](../languages/rust.md) · [C#/.NET](../languages/csharp.md) · [SQL & IDL](../languages/sql-idl.md).
+
 ## Kiểm chứng
 
 BLOCK khi project đích có lệnh tương ứng. Không có lệnh thì ghi kiểm tra tay trong brief: bước, dữ liệu vào, kết quả.
@@ -24,6 +45,8 @@ BLOCK
 - [ ] Input đi qua validation ở biên (schema hoặc kiểu kiểm được) trước khi vào use case. Field bắt buộc, kiểu, và giới hạn độ dài nằm trong schema đó.
 - [ ] Phân quyền chạy trước khi đổi trạng thái. Đọc hoặc ghi theo chủ sở hữu kiểm tra đúng resource của actor đó, không chỉ "đã đăng nhập".
 - [ ] Ghi có thể bị client, job, hoặc webhook gửi lại thì có khóa idempotency hoặc ràng buộc unique. Gửi lại trả kết quả lần đầu, không tạo bản thứ hai.
+- [ ] Webhook nhận từ bên ngoài xác thực chữ ký mật mã (`HMAC` trên raw body trong hằng thời gian) và kiểm tra mốc thời gian chống phát lại (replay window) trước khi xử lý nghiệp vụ hoặc đưa vào hàng đợi.
+- [ ] Điểm nhận upload file áp trần dung lượng ngay ở biên, kiểm định dạng thật (magic bytes / MIME chuẩn thay vì chỉ tin tên file), sinh tên lưu trữ an toàn và đẩy file lớn thẳng lên object storage qua presigned URL thay vì giữ trong bộ nhớ API process.
 - [ ] Tạo và cập nhật một nghiệp vụ nằm trong một transaction. Gọi HTTP hoặc hàng đợi ở trong transaction là BLOCK — chuyển sang ghi DB rồi phát sự kiện sau commit, hoặc outbox.
 
 DECIDE

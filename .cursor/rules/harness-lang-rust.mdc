@@ -1,0 +1,15 @@
+---
+description: Hồ sơ ngôn ngữ Rust cho Backend, Network, Gateway và Worker hiệu năng cao.
+globs: "**/*.rs,**/Cargo.toml"
+alwaysApply: false
+---
+
+# Rust
+
+Đọc `languages/rust.md` trong gốc bộ harness.
+
+- Tách crate theo vai trò trong Cargo Workspace (hoặc giới hạn `pub(crate)`): `domain` thuần không phụ thuộc `axum`/`tonic`/`sqlx`/`reqwest`.
+- Cấm `.unwrap()` và `.expect()` trên dữ liệu đầu vào hoặc đường phục vụ request; trả `Result<T, E>` phân loại rõ lỗi miền và lỗi hạ tầng.
+- Không gọi I/O đồng bộ hay việc nặng CPU trên luồng async của `tokio` (dùng `spawn_blocking`), không giữ `std::sync::MutexGuard` qua `.await`, kiểm cancel-safety trong `tokio::select!`.
+- Dùng chung `reqwest::Client` và DB pool có cấu hình timeout và trần kết nối.
+- G2 chạy `cargo clippy --workspace --all-targets -- -D warnings` và `cargo test` / `cargo nextest run`.

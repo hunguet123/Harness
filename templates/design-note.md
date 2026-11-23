@@ -2,10 +2,18 @@
 
 - Change brief:
 - Domain liên quan:
+- Ngôn ngữ & hồ sơ áp dụng (`languages/*.md`):
 
 ## Bối cảnh
 
 Ai dùng, tải dự kiến, dữ liệu có được mất không, độ trễ mục tiêu.
+
+## Ánh xạ module và ranh giới
+
+Ánh xạ thư mục thực tế của dự án vào bản đồ module trong `GATES.md` (chiều import hợp lệ, cạnh nào cấm đi xuyên):
+
+- Module thay đổi:
+- Chiều phụ thuộc giữ nguyên / thêm mới:
 
 ## Quyết định
 
