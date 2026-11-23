@@ -27,8 +27,8 @@ Lệnh cài đặt an toàn và chạy lặp được (idempotent):
   ```
 - **Kiểm tra hoặc gỡ bỏ:**
   ```sh
-  /duong/dan/harness/install.sh --check /duong/dan/project
-  /duong/dan/harness/install.sh --uninstall /duong/dan/project
+  curl -fsSL https://raw.githubusercontent.com/hunguet123/Harness/main/install.sh | sh -s -- --check
+  curl -fsSL https://raw.githubusercontent.com/hunguet123/Harness/main/install.sh | sh -s -- --uninstall
   ```
 
 ## Dùng trong 5 phút

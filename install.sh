@@ -126,7 +126,6 @@ remove_exclude_block() {
 
 write_exclude_block() {
   target_abs="$1"
-  created_mcp="$2"
   if ! git -C "$target_abs" rev-parse --git-dir >/dev/null 2>&1; then
     echo "Lưu ý: thư mục đích chưa có git repo nên bỏ qua bước ghi .git/info/exclude." >&2
     return 0
@@ -137,6 +136,11 @@ write_exclude_block() {
   rel_prefix=""
   if [ "$target_abs" != "$top_dir" ]; then
     rel_prefix="${target_abs#"$top_dir"/}/"
+  fi
+
+  mcp_tracked=0
+  if git -C "$target_abs" ls-files --error-unmatch ".cursor/mcp.json" >/dev/null 2>&1; then
+    mcp_tracked=1
   fi
 
   mkdir -p "$git_dir/info"
@@ -151,7 +155,7 @@ write_exclude_block() {
     echo "/${rel_prefix}.cursor/skills/run-harness/"
     echo "/${rel_prefix}.cursor/skills/review-harness/"
     echo "/${rel_prefix}.cursor/skills/harness-*/"
-    if [ "$created_mcp" = "1" ]; then
+    if [ "$mcp_tracked" = "0" ]; then
       echo "/${rel_prefix}.cursor/mcp.json"
     fi
     echo "# <<< harness-local <<<"
@@ -202,6 +206,13 @@ run_check() {
       errors=$((errors + 1))
     fi
   done
+
+  if [ -s "$docs_root/templates/change-brief.md" ]; then
+    if ! grep -q '^- Ngày:$' "$docs_root/templates/change-brief.md"; then
+      echo "File mẫu templates/change-brief.md đã bị ghi đè (cần copy ra ngoài trước khi điền)." >&2
+      errors=$((errors + 1))
+    fi
+  fi
 
   for r in $RULE_FILES; do
     rf="$target_abs/.cursor/rules/$r"
@@ -400,20 +411,18 @@ for s in $SKILLS; do
     "$SRC_DIR/.cursor/skills/$s/SKILL.md" >"$TARGET_ABS/.cursor/skills/$s/SKILL.md"
 done
 
-CREATED_MCP=0
 if [ ! -e "$TARGET_ABS/.cursor/mcp.json" ]; then
   cat >"$TARGET_ABS/.cursor/mcp.json" <<'EOF'
 {
   "mcpServers": {}
 }
 EOF
-  CREATED_MCP=1
 else
   echo "Giữ nguyên .cursor/mcp.json hiện có của dự án."
 fi
 
 if [ "$LOCAL_EXCLUDE" = "1" ]; then
-  write_exclude_block "$TARGET_ABS" "$CREATED_MCP"
+  write_exclude_block "$TARGET_ABS"
 fi
 
 echo "Đã cài đặt Harness vào '$TARGET_ABS':"
