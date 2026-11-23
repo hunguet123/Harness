@@ -9,13 +9,13 @@ Ai dùng, tải dự kiến, dữ liệu có được mất không, độ trễ 
 
 ## Quyết định
 
-| Câu hỏi | Chọn | Vì sao |
-| --- | --- | --- |
-| Consistency (mạnh / eventual / theo entity) | | |
-| Nguồn sự thật | | |
-| Cách hỏng khi dependency chết | | |
-| Idempotency của ghi | | |
-| Offline (mobile) hoặc trạng thái lỗi (web) | | |
+| Hạng mục / Tín hiệu | Chọn | Đánh đổi & cách hỏng | Đổi khi nào |
+| --- | --- | --- | --- |
+| Consistency (mạnh / eventual / theo phiên bản) | | | |
+| Nguồn sự thật | | | |
+| Idempotency của ghi | | | |
+| Offline (mobile) hoặc trạng thái lỗi (web) | | | |
+| Thành phần thêm mới (nếu có) | | | |
 
 ## Hợp đồng
 

@@ -5,7 +5,7 @@ alwaysApply: false
 
 # Mobile
 
-Đọc `harness/mobile/GATES.md` và áp mọi mục BLOCK.
+Đọc `mobile/GATES.md` trong gốc bộ harness và áp mọi mục BLOCK.
 
 - Khai báo tư thế từng tính năng: online có UX mất mạng, hoặc offline-first.
 - Token nằm trong kho mã hóa của hệ điều hành.

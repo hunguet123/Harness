@@ -31,7 +31,7 @@ DECIDE
 
 ## G1 — Thành phần chỉ thêm khi có tín hiệu
 
-Mỗi thành phần mới cần một dòng "tín hiệu → chọn → cách hỏng". Thêm cho đủ sơ đồ là BLOCK ngược: phải xóa khỏi phạm vi.
+Mỗi thành phần mới trong design note có đủ bốn cột: tín hiệu, chọn, đánh đổi & cách hỏng, đổi khi nào. Thêm cho đủ sơ đồ là BLOCK ngược: phải xóa khỏi phạm vi.
 
 | Tín hiệu | Cân nhắc | Chưa thêm khi |
 | --- | --- | --- |

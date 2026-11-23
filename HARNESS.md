@@ -17,7 +17,7 @@ Một thay đổi chỉ xong khi bốn cổng dưới đây có bằng chứng. 
 
 ### G0 — Phạm vi
 
-Điền change brief.
+Copy [templates/change-brief.md](templates/change-brief.md) sang bản ghi của task ở project đích (ví dụ `docs/changes/<ten-task>/change-brief.md`), rồi điền. Không ghi đè các file mẫu trong `templates/`.
 
 - Hành vi người dùng hoặc hệ thống thấy được, viết một câu.
 - Trong phạm vi và ngoài phạm vi.
@@ -36,7 +36,7 @@ Bắt buộc khi thay đổi đụng một trong các ranh giới:
 - Giao thức mạng: timeout, retry, idempotency
 - Tư thế offline của mobile
 
-Dùng [templates/design-note.md](templates/design-note.md). Ghi quyết định và cách hỏng. Cổng domain tương ứng là danh sách câu hỏi của G1.
+Copy [templates/design-note.md](templates/design-note.md) sang cạnh change brief trước khi viết code. Ghi quyết định (tín hiệu, chọn, đánh đổi & cách hỏng, đổi khi nào) và hợp đồng biên. Cổng domain tương ứng là danh sách câu hỏi của G1.
 
 ### G2 — Làm và kiểm
 
@@ -44,6 +44,7 @@ Dùng [templates/design-note.md](templates/design-note.md). Ghi quyết định 
 - Ràng buộc nằm ở nơi nền tảng cưỡng bức được: constraint DB, validation DTO, type, lint, unique key, timeout trong client.
 - Diff chỉ chứa phần thuộc phạm vi G0.
 - Lệnh kiểm chứng là lệnh của project đích, ghi trong brief: unit, integration hoặc end-to-end, lint, build. Harness không chọn package manager hay framework.
+- Nếu phạm vi G0 chỉ dừng ở thiết kế (chưa đổi code thực thi), ghi `K/A — chỉ thiết kế, bằng chứng ở design note` ở G2.
 
 ### G3 — Soát và ghi nhớ
 
@@ -51,7 +52,7 @@ Lượt hai:
 
 - Chạy lại lệnh đã khai trong brief. Dán pass/fail.
 - Đối chiếu diff với cổng domain. Mục bỏ qua có lý do.
-- Lỗi review hoặc lỗi chạy có thể tái diễn: viết failure memory, gồm mục **Phát hiện** (test, lint, hoặc bước review sẽ bắt lần sau).
+- Lỗi review hoặc lỗi chạy có thể tái diễn: copy [templates/failure-memory.md](templates/failure-memory.md) sang nơi lưu lỗi của project đích, gồm mục **Phát hiện** (test, lint, hoặc bước review sẽ bắt lần sau).
 
 ## Mức chặn
 
@@ -59,6 +60,11 @@ Lượt hai:
 | --- | --- |
 | BLOCK | Chưa có bằng chứng thì không đánh dấu xong |
 | DECIDE | Phải ghi một quyết định. Im lặng là chưa xong |
+
+Trong `GATES.md`, các mục BLOCK được tách theo hai phạm vi áp dụng để PR nhỏ không phải giải trình toàn bộ hạ tầng:
+
+- **Theo từng thay đổi:** áp cho mọi task mở domain đó.
+- **Chuẩn nền service:** BLOCK khi dựng mới service, tạo client/pool mới, thêm dependency ngoài, hoặc sửa bootstrap/vận hành. Khi sửa nghiệp vụ trên nền có sẵn mà không đụng các phần này, ghi nhận một lần ở brief thay vì giải trình từng dòng (nếu phát hiện nền hiện tại đang thiếu mục chuẩn nền liên quan trực tiếp tới đường vừa sửa thì phải nêu rủi ro trong brief).
 
 ## Bằng chứng hợp lệ
 
@@ -74,10 +80,10 @@ Một trong các dạng sau, gắn với đúng mục cổng:
 
 ## Định nghĩa xong
 
-- G0 có brief.
+- G0 có brief (bản riêng của task, không sửa file trong `templates/`).
 - Mỗi domain bị đụng đã tick BLOCK, hoặc ghi "không áp dụng" kèm lý do.
-- G2 có lệnh đã chạy.
-- G3 đã đối chiếu diff.
+- G2 có lệnh đã chạy, hoặc ghi `K/A` kèm lý do khi phạm vi chỉ là thiết kế.
+- G3 đã đối chiếu diff (hoặc design note nếu chưa có code).
 - Failure memory được viết khi có lỗi đáng lặp, hoặc brief ghi "không có lỗi đáng ghi".
 
 ## Việc harness không làm

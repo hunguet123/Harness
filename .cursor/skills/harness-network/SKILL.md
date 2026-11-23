@@ -19,6 +19,6 @@ Thứ tự lấy từ [resilience](https://github.com/bricerising/enterprise-sof
 4. Circuit breaker chỉ khi dependency fail-slow đã được đo. Một breaker cho một dependency.
 5. Trần đồng thời từng dependency.
 
-Phân loại lỗi: timeout, reset, 408, 429, 502, 503, 504 có thể retry nếu thao tác idempotent. 400, 401, 403, 404, 422 thì dừng. 429 có `Retry-After` thì chờ ít nhất khoảng đó.
+Phân loại lỗi: timeout, reset, 408, 429, 502, 503, 504 có thể retry nếu thao tác idempotent. 400, 403, 404, 409, 422 thì dừng. `401` xử lý ở luồng làm mới phiên tối đa một lần, không lặp ở lớp retry mạng. 429 có `Retry-After` thì chờ ít nhất khoảng đó.
 
 Test: hết hạn trả lỗi đã đặt tên trong hạn; gửi lại không nhân đôi hiệu ứng.

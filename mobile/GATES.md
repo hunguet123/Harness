@@ -31,7 +31,7 @@ BLOCK
 - [ ] Ghi cục bộ và hàng outbox nằm trong cùng một commit. Giết app giữa chừng không mất thao tác đã hiện trên UI, và không tạo hàng outbox mà không có thay đổi cục bộ.
 - [ ] Mỗi mutation có idempotency key sinh từ client. Server dedupe. Thiếu key trên đường retry là BLOCK.
 - [ ] Outbox giữ thứ tự trên cùng một aggregate. Aggregate khác được gửi song song có trần.
-- [ ] Hết hạn thử lại (4xx không phải 401/409) thì dừng, hiện cho người dùng, và ghi telemetry. Không retry vô hạn một mutation bị từ chối.
+- [ ] Hết hạn thử lại hoặc gặp 4xx từ chối nghiệp vụ (trừ `401` làm mới phiên một lần và `409` chạy chiến lược xung đột) thì dừng, hiện cho người dùng, và ghi telemetry. Không retry vô hạn một mutation bị từ chối.
 - [ ] Trạng thái pending hiện sau vài giây. Thất bại cuối thì hoàn tác bản cục bộ và có lối gửi lại.
 - [ ] Ảnh và video là đối tượng riêng, upload theo tham chiếu. Không nhét blob vào hàng sync.
 
@@ -51,7 +51,7 @@ BLOCK
 
 - [ ] Một test hoặc kịch bản tay: máy bay bật, tạo một ghi, mở lại app, ghi vẫn còn và được gửi khi có mạng, server chỉ nhận một lần.
 - [ ] Hai lần gửi cùng idempotency key không tạo hai bản ghi. **Bằng chứng:** test server (Backend) cộng với ghi chú client gửi lại cùng key.
-- [ ] 401 làm mới phiên hoặc đưa về đăng nhập. Vòng lặp refresh là BLOCK.
+- [ ] `401` làm mới phiên tối đa một lần ở lớp auth rồi gửi lại cùng idempotency key, hoặc đưa về đăng nhập. Vòng lặp refresh là BLOCK.
 
 ## G3 — Cờ đỏ
 

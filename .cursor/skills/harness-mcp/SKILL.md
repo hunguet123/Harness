@@ -22,6 +22,6 @@ Nguồn danh sách: [modelcontextprotocol/servers](https://github.com/modelconte
 | Engine khác | DBHub với `readonly` | Không bật ghi |
 | Nhớ lỗi lần sau | File `templates/failure-memory.md` | Không dùng server Memory làm chỗ ghi harness |
 
-Chỉ copy khối server task cần từ `harness/mcp/mcp.example.json` vào `.cursor/mcp.json`. Hết task thì trả file về `{"mcpServers": {}}` nếu server không còn thuộc project đích.
+Chỉ copy khối server task cần từ [mcp.example.json](../../../mcp/mcp.example.json) vào `.cursor/mcp.json`. Hết task thì trả file về `{"mcpServers": {}}` nếu server không còn thuộc project đích (đặc biệt khi `.cursor` đang được symlink ở thư mục cha nhiều project).
 
 Kết quả tool ghi vào change brief: gọi gì, và kết quả rút gọn.

@@ -22,7 +22,7 @@ BLOCK
 - [ ] Danh sách dùng thứ tự ổn định và phân trang. Offset sâu trên bảng lớn chuyển sang keyset; ghi trong note nếu vẫn dùng offset vì dữ liệu nhỏ.
 - [ ] Lỗi có dạng ổn định: mã, thông điệp an toàn với client, không trả stack trace hay câu SQL.
 - [ ] Input đi qua validation ở biên (schema hoặc kiểu kiểm được) trước khi vào use case. Field bắt buộc, kiểu, và giới hạn độ dài nằm trong schema đó.
-- [ ] Phán quyền chạy trước khi đổi trạng thái. Đọc hoặc ghi theo chủ sở hữu kiểm tra đúng resource của actor đó, không chỉ "đã đăng nhập".
+- [ ] Phân quyền chạy trước khi đổi trạng thái. Đọc hoặc ghi theo chủ sở hữu kiểm tra đúng resource của actor đó, không chỉ "đã đăng nhập".
 - [ ] Ghi có thể bị client, job, hoặc webhook gửi lại thì có khóa idempotency hoặc ràng buộc unique. Gửi lại trả kết quả lần đầu, không tạo bản thứ hai.
 - [ ] Tạo và cập nhật một nghiệp vụ nằm trong một transaction. Gọi HTTP hoặc hàng đợi ở trong transaction là BLOCK — chuyển sang ghi DB rồi phát sự kiện sau commit, hoặc outbox.
 
@@ -31,17 +31,23 @@ DECIDE
 - [ ] Phiên bản API khi client cũ còn sống. Mobile cần chính sách tương thích rõ hơn web cùng đợt phát hành.
 - [ ] `Idempotency-Key` đặt ở header hay ở khóa tự nhiên của nghiệp vụ (email, mã đơn). Cùng key mà body khác nhau thì trả xung đột.
 
-## G2 — Cấu trúc
+## G2 — Cấu trúc (theo từng thay đổi)
 
-BLOCK
+BLOCK cho mọi thay đổi mở cổng Backend:
 
 - [ ] Adapter nhận request (HTTP, RPC, job) và gọi use case. Luật nghiệp vụ không nằm trong adapter.
-- [ ] Ranh giới module hoặc package được khai. Vòng phụ thuộc cố ý thì ghi trong brief.
-- [ ] Config và bí mật đọc từ môi trường. Repo có ví dụ tên biến, không có giá trị thật.
 - [ ] Log tại biên giới thất bại (từ chối quyền, dependency lỗi, ghi không idempotent) gồm định danh request. Không log token, mật khẩu, hoặc body thanh toán.
+- [ ] Đổi mapping lưu trữ đi kèm test ghi một hàng rồi đọc lại từ kho. Kết quả HTTP một mình không đủ.
+- [ ] Không đưa giá trị bí mật vào repo. Thêm cấu hình mới thì cập nhật file mẫu tên biến môi trường.
+
+## G2 — Chuẩn nền service
+
+BLOCK khi dựng mới service, thêm kho/dependency bắt buộc, hoặc sửa bootstrap/cấu hình chạy. Task chỉ đổi nghiệp vụ trên nền đã đạt thì đánh dấu "trên nền có sẵn" trong brief:
+
+- [ ] Ranh giới module hoặc package được khai. Vòng phụ thuộc cố ý thì ghi trong brief.
+- [ ] Config và bí mật đọc từ môi trường lúc khởi động (thiếu cấu hình bắt buộc thì dừng sớm).
 - [ ] Process có đường tắt nhẹ nhàng: ngừng nhận request mới, đợi việc đang chạy trong hạn, đóng kết nối kho dữ liệu.
 - [ ] Health tách sống và sẵn sàng khi có dependency. Sống trả khi process up. Sẵn sàng trả lỗi khi kho hoặc dependency bắt buộc không dùng được.
-- [ ] Đổi mapping lưu trữ đi kèm test ghi một hàng rồi đọc lại từ kho. Kết quả HTTP một mình không đủ.
 
 ## G2 — Test tối thiểu
 

@@ -5,9 +5,9 @@ alwaysApply: false
 
 # MCP
 
-Đọc `harness/mcp/catalog.md` trước khi thêm server.
+Đọc `mcp/catalog.md` trong gốc bộ harness trước khi thêm server.
 
-- `.cursor/mcp.json` để trống cho đến khi task cần một server. Copy đúng một khối từ `harness/mcp/mcp.example.json`.
+- `.cursor/mcp.json` để trống cho đến khi task cần một server. Copy đúng một khối từ `mcp/mcp.example.json`, và trả file về `{"mcpServers": {}}` khi hết task (nhất là khi `.cursor` đang được symlink ở thư mục cha dùng chung nhiều project).
 - Không dùng server đã archive, gồm `@modelcontextprotocol/server-postgres` và server GitHub cũ.
 - Frontend cần trace mạng hoặc hiệu năng thì bật `chrome-devtools-mcp`. Không trỏ nó vào profile Chrome đang đăng nhập sản phẩm thật.
 - Database chỉ bật profile read-only. Không ghi connection string vào harness.

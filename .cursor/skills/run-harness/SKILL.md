@@ -13,12 +13,14 @@ Nguồn vòng: [harness-engineering](https://github.com/github/awesome-copilot/b
 
 ## Việc phải làm
 
-1. Điền brief từ `harness/templates/change-brief.md`. Stack và lệnh test là của project đích.
+Đường dẫn dưới đây tính từ gốc bộ harness (thêm tiền tố `harness/` nếu đặt làm thư mục con):
+
+1. Copy [change-brief.md](../../../templates/change-brief.md) sang bản ghi của task ở project đích rồi điền (không sửa trực tiếp file trong `templates/`). Stack và lệnh test là của project đích.
 2. Đánh dấu domain. Một task thường 2–3 domain. System design trước nếu còn đang chọn thành phần.
-3. Đụng API, schema, hợp đồng UI, timeout/retry, hoặc offline thì viết `harness/templates/design-note.md` trước code.
+3. Đụng API, schema, hợp đồng UI, timeout/retry, hoặc offline thì copy [design-note.md](../../../templates/design-note.md) sang cạnh brief và viết trước code.
 4. Đọc skill domain tương ứng, rồi đọc `GATES.md` của domain đó. Áp mục BLOCK.
-5. Chạy lệnh đã ghi trong brief. Dán kết quả.
-6. Lượt hai đối chiếu diff với cổng. Lỗi có thể lặp thì dùng `harness/templates/failure-memory.md`.
+5. Chạy lệnh đã ghi trong brief (hoặc ghi `K/A — lý do` khi phạm vi chỉ là thiết kế). Dán kết quả.
+6. Lượt hai đối chiếu diff với cổng. Lỗi có thể lặp thì copy [failure-memory.md](../../../templates/failure-memory.md) sang nơi lưu lỗi của project đích.
 
 ## Định tuyến
 

@@ -5,7 +5,7 @@ alwaysApply: false
 
 # Frontend
 
-Đọc `harness/frontend/GATES.md` và áp mọi mục BLOCK. Không giả định framework.
+Đọc `frontend/GATES.md` trong gốc bộ harness và áp mọi mục BLOCK. Không giả định framework.
 
 - Mỗi màn hình có loading, có dữ liệu, rỗng, lỗi, và gửi lại.
 - Vùng tương tác có vai trò và tên accessible. Test tìm theo vai trò và tên.

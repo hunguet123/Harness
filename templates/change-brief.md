@@ -9,17 +9,20 @@
 
 - Trong phạm vi:
 - Ngoài phạm vi:
+- Loại thay đổi:
+  - [ ] Sửa/thêm nghiệp vụ trên nền có sẵn (kiểm mục **Theo từng thay đổi**; chuẩn nền giữ nguyên)
+  - [ ] Dựng mới service / thêm client hoặc dependency ngoài / sửa bootstrap-vận hành (kiểm cả **Chuẩn nền service**)
 
 ## Domain
 
-Đánh dấu file sẽ mở.
+Đánh dấu file sẽ mở (đường dẫn tính từ gốc bộ harness):
 
-- [ ] System Design — `harness/system-design/GATES.md`
-- [ ] Backend — `harness/backend/GATES.md`
-- [ ] Database — `harness/database/GATES.md`
-- [ ] Network — `harness/network/GATES.md`
-- [ ] Frontend — `harness/frontend/GATES.md`
-- [ ] Mobile — `harness/mobile/GATES.md`
+- [ ] System Design — `system-design/GATES.md`
+- [ ] Backend — `backend/GATES.md`
+- [ ] Database — `database/GATES.md`
+- [ ] Network — `network/GATES.md`
+- [ ] Frontend — `frontend/GATES.md`
+- [ ] Mobile — `mobile/GATES.md`
 
 Mục không áp dụng (một dòng lý do mỗi mục):
 
@@ -37,7 +40,7 @@ Có đụng API, schema, hợp đồng UI, timeout/retry, hoặc offline không?
 
 ## Bằng chứng G2
 
-Điền lệnh thật của project đích.
+Điền lệnh thật của project đích. Nếu mục không áp dụng (ví dụ phạm vi chỉ là thiết kế, chưa đổi code thực thi), ghi `K/A — lý do`.
 
 | Việc | Lệnh | Kết quả |
 | --- | --- | --- |

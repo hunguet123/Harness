@@ -5,13 +5,13 @@ alwaysApply: false
 
 # Database
 
-Đọc `harness/database/GATES.md` và áp mọi mục BLOCK.
+Đọc `database/GATES.md` trong gốc bộ harness và áp mọi mục BLOCK.
 
 - Luật không được sai thì nằm ở primary key, foreign key, unique, check, hoặc not null.
 - Truy vấn nóng nêu index sẽ dùng, hoặc lý do sequential scan vẫn đúng.
 - Transaction ngắn. Không nhét gọi mạng vào transaction.
 - Đường sợ lost update thì ghi optimistic version hoặc khóa hàng, và test hai phiên đồng thời.
-- Bảng đang có traffic trên Postgres: index concurrent, `lock_timeout`, expand rồi backfill rồi mới siết constraint.
+- Bảng đang có traffic trên Postgres: index concurrent, `lock_timeout`, thêm cột nullable và phát hành code ghi cột đó → backfill theo lô → chỉ siết constraint sau khi app cũ không còn ghi null.
 
 ```text
 BAD: ALTER thêm NOT NULL và backfill cả bảng trong một transaction.

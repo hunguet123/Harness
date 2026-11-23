@@ -38,7 +38,7 @@ Ghi lệnh test, typecheck, và lint của project đích vào brief. Ảnh mộ
 - Spinner không có lối thoát khi request không bao giờ về. Phải có timeout nhìn thấy được, nối với [network/GATES.md](../network/GATES.md).
 - Cache UI giữ dữ liệu của user A sau khi user B đăng nhập trên cùng trình duyệt.
 - Màu là cách duy nhất để báo lỗi.
-- `useEffect` gọi API trùng không có hủy khi rời màn, rồi set state sau khi unmount gây ghi đè màn khác.
+- Gọi API khi mở màn hoặc đổi bộ lọc mà không hủy hay bỏ qua kết quả cũ khi rời màn, khiến response về muộn ghi đè dữ liệu mới.
 - Sửa hợp đồng field API trong component mà Backend chưa đổi, hoặc ngược lại.
 
 ## Mở thêm

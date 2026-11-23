@@ -5,10 +5,10 @@ alwaysApply: false
 
 # Backend
 
-Đọc `harness/backend/GATES.md` và áp mọi mục BLOCK. Không giả định framework.
+Đọc `backend/GATES.md` trong gốc bộ harness: áp mọi mục BLOCK **Theo từng thay đổi**, và áp thêm **Chuẩn nền service** khi dựng mới service, thêm dependency bắt buộc, hoặc sửa bootstrap/cấu hình. Không giả định framework.
 
 - Validate input ở biên trước use case.
-- Phán quyền và chủ sở hữu trước khi đổi trạng thái.
+- Phân quyền và chủ sở hữu trước khi đổi trạng thái.
 - Ghi có thể gửi lại thì có khóa idempotency hoặc unique. Gửi lại không tạo bản thứ hai.
 - Không gọi HTTP trong transaction. Phát sự kiện sau commit hoặc qua outbox.
 - Test ghi rồi đọc lại từ kho. Response HTTP một mình không đủ.

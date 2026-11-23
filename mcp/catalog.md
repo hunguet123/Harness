@@ -24,7 +24,7 @@ Lấy từ [modelcontextprotocol/servers](https://github.com/modelcontextprotoco
 | Database | `postgres` | Cần plan trên database thật. Test cục bộ không có `EXPLAIN` đủ. |
 | Backend, network, mobile, system design | Không | Bằng chứng là test, thiết kế, và lệnh của project đích. |
 
-Copy một khối từ [mcp.example.json](mcp.example.json). Đừng dán cả file nếu task chỉ cần một server.
+Copy một khối từ [mcp.example.json](mcp.example.json) khi task cần, và trả `.cursor/mcp.json` về `{"mcpServers": {}}` ngay khi hết task (đặc biệt khi `.cursor` đang được symlink ở thư mục cha chứa nhiều project). Đừng dán cả file nếu task chỉ cần một server; nếu ghim server lâu dài cho một repo riêng thì thay `@latest` bằng phiên bản đã kiểm.
 
 ## Bật Postgres
 

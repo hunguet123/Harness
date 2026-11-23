@@ -33,7 +33,7 @@ Với Postgres đang có traffic, các mục sau là BLOCK:
 
 - [ ] Tạo index bằng `CREATE INDEX CONCURRENTLY` trên bảng có ghi.
 - [ ] Session migration đặt `lock_timeout` để không xếp hàng vô hạn phía sau một khóa.
-- [ ] Thêm cột bắt buộc đi theo ba bước tách nhau: thêm cột nullable, backfill theo lô có thể chạy lại, rồi mới `NOT NULL` / constraint.
+- [ ] Thêm cột bắt buộc đi theo các bước tách nhau: thêm cột nullable và phát hành code ghi cột đó, backfill dữ liệu cũ theo lô có thể chạy lại, rồi chỉ siết `NOT NULL` / constraint (trên bảng lớn dùng `CHECK … NOT VALID` rồi `VALIDATE CONSTRAINT` trước) sau khi không còn phiên bản app cũ ghi null.
 - [ ] Backfill lọc phần chưa điền, có điểm dừng, và không nằm chung một transaction với DDL khóa bảng.
 - [ ] Bước phá dữ liệu (drop cột, siết kiểu) chạy sau khi phiên bản app cũ không còn đọc cột đó.
 

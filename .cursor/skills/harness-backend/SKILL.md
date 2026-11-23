@@ -16,7 +16,7 @@ Hình từ [harness-kit backend](https://github.com/romabeckman/harness-kit/blob
 ## Trước khi viết handler
 
 - Hợp đồng: method, path, status, mã lỗi, một ví dụ body.
-- Validation ở biên. Phán quyền và chủ sở hữu trước khi đổi trạng thái.
+- Validation ở biên. Phân quyền và chủ sở hữu trước khi đổi trạng thái.
 - Ghi có thể gửi lại: khóa idempotency hoặc unique. Cùng key, body khác → xung đột.
 - Transaction không chứa gọi HTTP. Sự kiện ra ngoài đi sau commit hoặc qua outbox.
 

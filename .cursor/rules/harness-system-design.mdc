@@ -5,11 +5,11 @@ alwaysApply: false
 
 # System design
 
-Đọc `harness/system-design/GATES.md`. Chạy vòng: phạm vi, ước lượng, sơ đồ, đánh đổi, cách hỏng.
+Đọc `system-design/GATES.md` trong gốc bộ harness. Chạy vòng: phạm vi, ước lượng, sơ đồ, đánh đổi, cách hỏng.
 
 - Viết trong phạm vi, ngoài phạm vi, latency, consistency trước khi thêm hộp.
 - QPS, dung lượng, băng thông có đơn vị. "Traffic cao" không phải số.
-- Mỗi lựa chọn có bốn cột: quyết định, giải quyết gì, làm xấu gì, đổi khi nào. Cột cuối là một tín hiệu đo được.
+- Mỗi lựa chọn có bốn cột: tín hiệu, chọn, đánh đổi & cách hỏng, đổi khi nào. Cột cuối là một ngưỡng đo được.
 - Coi thiết kế là giả thuyết. Ràng buộc đổi thì sửa phần giả thuyết đó gãy.
 
 ```text

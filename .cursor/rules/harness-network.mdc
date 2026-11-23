@@ -5,16 +5,16 @@ alwaysApply: false
 
 # Network
 
-Đọc `harness/network/GATES.md`. Áp theo thứ tự: timeout, idempotency, retry, rồi mới circuit breaker và trần đồng thời.
+Đọc `network/GATES.md` trong gốc bộ harness (áp mục **Theo từng thay đổi**; áp thêm **Chuẩn nền service và client** khi tạo client/pool mới hoặc sửa TLS/LB). Áp theo thứ tự: timeout, idempotency, retry, rồi mới circuit breaker và trần đồng thời.
 
 - Mọi cuộc gọi ra có timeout kết nối và timeout toàn phần. Không dùng default vô hạn của thư viện.
 - Deadline của request người dùng bao các hop tuần tự và ngắn hơn timeout proxy phía trước.
 - Có retry thì thao tác phải idempotent trước. Retry có trần, backoff, jitter, và đúng một lớp làm chủ.
-- 4xx nghiệp vụ không retry. 429 tôn trọng `Retry-After`.
+- 4xx nghiệp vụ không retry (riêng `401` xử lý ở luồng làm mới phiên tối đa một lần, không lặp ở lớp retry mạng). `429` tôn trọng `Retry-After`.
 
 ```text
 BAD: SDK retry POST tạo đơn, và gateway cũng retry.
-GOOD: POST tạo đơn không retry. POST có Idempotency-Key retry tối đa 2 lần trong deadline 800ms.
+GOOD: POST tạo đơn không có khóa thì không retry. Đường có Idempotency-Key chỉ retry ở một lớp, số lần và ngân sách deadline lấy từ design note.
 ```
 
 Nguồn: [resilience skill](https://github.com/bricerising/enterprise-software-playbook/blob/main/skills/resilience/SKILL.md), [sota resilience](https://github.com/martinholovsky/sota-skills/blob/main/skills/sota-architecture/rules/04-resilience-and-failure-design.md).
